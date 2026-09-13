@@ -4,7 +4,7 @@
 
 Curated Nostr relays, grouped into collections and health-checked.
 
-See [docs/](docs/).
+See [notes/](notes/).
 
 ## License
 
