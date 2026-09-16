@@ -6,6 +6,11 @@ Curated Nostr relays, grouped into collections and health-checked.
 
 See [notes/](notes/).
 
+## Catalogue
+
+<!-- RELAYS:START -->
+<!-- RELAYS:END -->
+
 ## License
 
 Licensed under the MIT License ([LICENSE](LICENSE) or <https://opensource.org/licenses/MIT>).
