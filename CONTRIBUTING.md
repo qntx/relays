@@ -168,7 +168,8 @@ probing environment, not the relays.
 
 ## Deployment
 
-The image is published to `ghcr.io/qntx/relays` on every `main` push. The
+The image is published to `ghcr.io/qntx/relays` on every `v*` tag (or
+manually via `workflow_dispatch`). The
 container runs `relays run` on an hourly cadence; mount a volume at
 `/data` for the SQLite database. Set `RELAYS_STORE` to the artefact
 destination — `file:///path` or `s3://bucket` — and for S3-compatible
@@ -200,8 +201,8 @@ in the graph — verify with `cargo tree -i ring` / `cargo tree -i aws-lc-rs`.
 ## Versioning and release
 
 Bump `[workspace.package].version`, update `CHANGELOG.md`, merge, then tag
-`v*.*.*` on main. The image workflow publishes `ghcr.io/qntx/relays` on
-every `main` push.
+`v*.*.*` on main — the tag push triggers the image workflow that publishes
+`ghcr.io/qntx/relays` (amd64 + arm64, signed, with SBOM and attestations).
 
 ## Commits
 

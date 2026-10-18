@@ -32,7 +32,7 @@ path.
   `report <source>`; flags mirror the `RELAYS_*` environment variables.
 - **Container image**: multi-stage Dockerfile on
   `gcr.io/distroless/cc-debian12:nonroot`, published to `ghcr.io/qntx/relays`
-  on every `main` push.
+  on every `v*` tag (or manually via `workflow_dispatch`).
 - **`report.yml`** workflow: weekly `relays report` run that opens or updates
   the single "Relay report" issue.
 - **Licensing**: the repository is dual-licensed `MIT OR Apache-2.0`
