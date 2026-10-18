@@ -1,0 +1,15 @@
+exclude = ["**/target/**", "docs/**"]
+
+[formatting]
+align_entries        = true
+indent_string        = "  "
+array_trailing_comma = true
+array_auto_expand    = false
+column_width         = 200
+
+# relays.toml keeps one URL per line; other files collapse arrays that fit.
+[[rule]]
+include = ["relays.toml"]
+
+[rule.formatting]
+array_auto_collapse = false

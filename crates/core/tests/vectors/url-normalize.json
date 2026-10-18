@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "capability": "core.url.normalize",
+  "source": {
+    "kind": "generated",
+    "generator": "@qntx/nostr",
+    "version": "0.12.1",
+    "cross_check": "nostr-tools 2.24.1 @7fa1ef4: 38/40 agree; ftp://* differs — nostr-tools keeps non-ws schemes, normalizeURL here rejects them with UrlError"
+  },
+  "cases": [
+    {
+      "input": "example.com",
+      "output": "wss://example.com/"
+    },
+    {
+      "input": "EXAMPLE.com",
+      "output": "wss://example.com/"
+    },
+    {
+      "input": "WSS://A.EXAMPLE",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "http://a.example:80/x",
+      "output": "ws://a.example/x"
+    },
+    {
+      "input": "https://a.example:443",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "http://a.example:443/x",
+      "output": "ws://a.example:443/x"
+    },
+    {
+      "input": "https://a.example:80/x",
+      "output": "wss://a.example:80/x"
+    },
+    {
+      "input": "http://a.example:80",
+      "output": "ws://a.example/"
+    },
+    {
+      "input": "http://a.example:8080/x",
+      "output": "ws://a.example:8080/x"
+    },
+    {
+      "input": "wss://a.example:443/x",
+      "output": "wss://a.example/x"
+    },
+    {
+      "input": "wss://a.example:8443/x",
+      "output": "wss://a.example:8443/x"
+    },
+    {
+      "input": "wss://a.example:80/x",
+      "output": "wss://a.example:80/x"
+    },
+    {
+      "input": "ws://a.example:443/x",
+      "output": "ws://a.example:443/x"
+    },
+    {
+      "input": "ws://a.example:80/x",
+      "output": "ws://a.example/x"
+    },
+    {
+      "input": "wss://a.example//a///b/",
+      "output": "wss://a.example/a/b"
+    },
+    {
+      "input": "wss://a.example//",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "wss://a.example///",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "wss://a.example/?b=2&a=1&a=0",
+      "output": "wss://a.example/?a=1&a=0&b=2"
+    },
+    {
+      "input": "wss://a.example/?a=1&a=2&b=0&a=3",
+      "output": "wss://a.example/?a=1&a=2&a=3&b=0"
+    },
+    {
+      "input": "wss://a.example/?q=a+b",
+      "output": "wss://a.example/?q=a+b"
+    },
+    {
+      "input": "wss://a.example/?q=a%2Bb",
+      "output": "wss://a.example/?q=a%2Bb"
+    },
+    {
+      "input": "wss://a.example/?q=a%20b",
+      "output": "wss://a.example/?q=a+b"
+    },
+    {
+      "input": "wss://a.example/?",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "wss://a.example/?#x",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "wss://a.example/path#frag",
+      "output": "wss://a.example/path"
+    },
+    {
+      "input": "#frag",
+      "error": "UrlError"
+    },
+    {
+      "input": "wss://a.example",
+      "output": "wss://a.example/"
+    },
+    {
+      "input": "relay.example:4443/p?q=z",
+      "output": "wss://relay.example:4443/p?q=z"
+    },
+    {
+      "input": "wss://u:p@a.example",
+      "output": "wss://u:p@a.example/"
+    },
+    {
+      "input": "wss://127.0.0.1:7777/x",
+      "output": "wss://127.0.0.1:7777/x"
+    },
+    {
+      "input": "wss://[::1]:8080/x",
+      "output": "wss://[::1]:8080/x"
+    },
+    {
+      "input": "wss://bücher.example",
+      "output": "wss://xn--bcher-kva.example/"
+    },
+    {
+      "input": "ftp://a.example",
+      "error": "UrlError"
+    },
+    {
+      "input": "ftp://x",
+      "error": "UrlError"
+    },
+    {
+      "input": "wss://",
+      "error": "UrlError"
+    },
+    {
+      "input": "ws://exa mple.com",
+      "error": "UrlError"
+    },
+    {
+      "input": "http://",
+      "error": "UrlError"
+    },
+    {
+      "input": "",
+      "error": "UrlError"
+    },
+    {
+      "input": "not a url",
+      "error": "UrlError"
+    },
+    {
+      "input": "wss://a.example/üñí",
+      "output": "wss://a.example/%C3%BC%C3%B1%C3%AD"
+    }
+  ]
+}

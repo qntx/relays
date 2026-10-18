@@ -1,886 +1,670 @@
-# =============================================================================
-# Awesome Nostr Relays — single source of truth
-# =============================================================================
-# Edit this file to add / remove / reclassify relays.
-# CI will regenerate:
-#   - README.md (section between <!-- RELAYS:START --> and <!-- RELAYS:END -->)
-#   - api/relays.json        (full dataset with health status)
-#   - api/urls.json           (flat list of URLs only)
-#   - api/collections.json    (grouped by collection)
+# Relay directory curation — single source of truth.
 #
-# Conventions
-# -----------
-# - URL: MUST be `wss://` (WebSocket Secure) or `ws://` for onion services;
-#        include trailing slash for root paths (e.g. `wss://relay.damus.io/`).
-# - network: optional; auto-derived from the URL host (`.onion` → tor,
-#            `.i2p` → i2p, `.loki` → loki, otherwise clearnet). Set explicitly
-#            only to override. NIP-66 `n`.
-# - country: ISO 3166-1 alpha-2 uppercase (e.g. "US", "JP", "DE"); use "XX" for
-#            unknown. Omit for hidden-service-only relays.
-# - geohash: optional NIP-52 geohash for finer-grained location (NIP-66 `g`).
-# - requirements: optional table of posting policies (NIP-66 `R`), e.g.
-#                 `requirements = { payment = true, auth = true }`.
-# - topics: optional free-form lowercase tags for discovery (NIP-66 `t`).
-# - collections: each relay MUST reference at least one existing collection id.
-# - Keep entries sorted alphabetically by `url` within each block for easier
-#   diffs and merges.
-# =============================================================================
-
-schema_version = "2"
-
-# -----------------------------------------------------------------------------
-# Collections — discovery taxonomy
-# -----------------------------------------------------------------------------
-[[collections]]
-id = "featured"
-name = "Featured"
-description = "Hand-picked, widely adopted relays with strong operational track record."
-
-[[collections]]
-id = "global"
-name = "Global Feeds"
-description = "General-purpose relays that accept events from any pubkey."
-
-[[collections]]
-id = "community"
-name = "Curated Communities"
-description = "Relays that focus on community-driven content and curation."
-
-[[collections]]
-id = "special"
-name = "Special Purpose"
-description = "Relays with unique filtering rules, display mechanisms, or event constraints."
-
-[[collections]]
-id = "topic"
-name = "Interest Groups"
-description = "Single-topic relays for focused discussions."
-
-[[collections]]
-id = "bot"
-name = "Automated Feeds"
-description = "Relays that primarily serve bot / algorithm / news feeds."
-
-[[collections]]
-id = "search"
-name = "Search & Index"
-description = "Relays exposing NIP-50 search or acting as indexers."
-
-[[collections]]
-id = "paid"
-name = "Paid Relays"
-description = "Relays that require payment (admission, subscription, or per-event) to post."
-
-[[collections]]
-id = "wot"
-name = "Web of Trust"
-description = "Relays filtering content by web-of-trust policies."
-
-[[collections]]
-id = "bridge"
-name = "Bridges & Aggregators"
-description = "Relays that bridge other networks (ActivityPub, RSS, etc.) or aggregate content."
-
-[[collections]]
-id = "regional-americas"
-name = "Regional — Americas"
-description = "Relays operated in North & South America."
-
-[[collections]]
-id = "regional-europe"
-name = "Regional — Europe"
-description = "Relays operated in Europe."
-
-[[collections]]
-id = "regional-asia"
-name = "Regional — Asia / Pacific"
-description = "Relays operated in Asia and the Pacific."
-
-[[collections]]
-id = "language"
-name = "Language Communities"
-description = "Relays scoped by spoken language."
-
-[[collections]]
-id = "tor"
-name = "Tor / Onion"
-description = "Relays reachable via Tor hidden services (.onion)."
-
-# -----------------------------------------------------------------------------
-# Relays — keep sorted alphabetically by `url`
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://140.f7z.io/"
-name = "140"
-description = "Short-form relay limiting content to 140 characters."
-country = "US"
-software = "khatru"
-collections = ["special"]
-topics = ["short-form"]
-
-[[relays]]
-url = "wss://atlas.nostr.land/"
-name = "Atlas (nostr.land)"
-operator = "nostr.land"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["premium"]
-
-[[relays]]
-url = "wss://bitcoiner.social/"
-name = "Bitcoiner Social"
-country = "US"
-collections = ["community", "topic", "regional-americas"]
-topics = ["bitcoin"]
-
-[[relays]]
-url = "wss://bookmarks.relays.land/"
-name = "Bookmarks"
-description = "Relay scoped to bookmark-style events."
-country = "US"
-collections = ["special"]
-topics = ["bookmarks"]
-
-[[relays]]
-url = "wss://bucket.coracle.social/"
-name = "Coracle Bucket"
-operator = "coracle.social"
-country = "US"
-collections = ["special"]
-topics = ["personal"]
-
-[[relays]]
-url = "wss://christpill.nostr1.com/"
-name = "Christpill"
-collections = ["community"]
-topics = ["christian"]
-
-[[relays]]
-url = "wss://ditto.pub/relay"
-name = "Ditto"
-operator = "Ditto"
-software = "ditto"
-country = "US"
-collections = ["global", "bridge"]
-topics = ["fediverse"]
-
-[[relays]]
-url = "wss://eden.nostr.land/"
-name = "Eden (nostr.land)"
-operator = "nostr.land"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["premium"]
-
-[[relays]]
-url = "wss://feedback.relays.land/"
-name = "Feedback"
-description = "Feedback-scoped relay on the relays.land network."
-collections = ["special"]
-topics = ["feedback"]
-
-[[relays]]
-url = "wss://filter.nostr.wine/"
-name = "filter.nostr.wine"
-operator = "nostr.wine"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "bridge", "regional-americas"]
-topics = ["filter", "aggregator"]
-
-[[relays]]
-url = "wss://groups.0xchat.com/"
-name = "0xchat Groups"
-operator = "0xchat"
-collections = ["community", "special"]
-topics = ["groups", "nip29"]
-
-[[relays]]
-url = "wss://haven.girino.org/outbox"
-name = "Girino Haven Outbox"
-operator = "girino"
-collections = ["wot", "special"]
-topics = ["haven", "outbox"]
-
-[[relays]]
-url = "wss://impromptu.relays.land/"
-name = "Impromptu"
-description = "Ephemeral impromptu events."
-collections = ["special"]
-topics = ["ephemeral"]
-
-[[relays]]
-url = "wss://inbox.nostr.wine/"
-name = "inbox.nostr.wine"
-operator = "nostr.wine"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "special", "regional-americas"]
-topics = ["inbox", "nip17"]
-
-[[relays]]
-url = "wss://lockbox.relays.land/"
-name = "Lockbox"
-description = "Events are write-only and hidden from general reads."
-collections = ["special"]
-topics = ["write-only"]
-
-[[relays]]
-url = "wss://news.utxo.one/"
-name = "UTXO News"
-operator = "utxo.one"
-collections = ["bot"]
-topics = ["news"]
-
-[[relays]]
-url = "wss://nfrelay.app/"
-name = "nfrelay (nostr-filter-relay)"
-description = "Aggregator relay with content filtering (SFW/NSFW, language, topic)."
-software = "nostr-filter-relay"
-collections = ["bridge", "search"]
-topics = ["aggregator"]
-
-[[relays]]
-url = "wss://njump.me/"
-name = "njump"
-description = "Companion relay to njump.me content previews."
-collections = ["special"]
-topics = ["preview"]
-
-[[relays]]
-url = "wss://noornode.nostr1.com/"
-name = "Noor Node"
-collections = ["community"]
-
-[[relays]]
-url = "wss://nos.lol/"
-name = "nos.lol"
-country = "US"
-software = "strfry"
-collections = ["featured", "global", "regional-americas"]
-topics = ["popular"]
-
-[[relays]]
-url = "wss://nostr-01.yakihonne.com/"
-name = "YakiHonne"
-operator = "YakiHonne"
-country = "SG"
-collections = ["global", "regional-asia"]
-topics = ["yakihonne"]
-
-[[relays]]
-url = "wss://nostr.bitcoiner.social/"
-name = "nostr.bitcoiner.social"
-country = "US"
-collections = ["community", "topic", "regional-americas"]
-topics = ["bitcoin"]
-
-[[relays]]
-url = "wss://nostr.einundzwanzig.space/"
-name = "Einundzwanzig"
-description = "Relay for the German bitcoin podcast community."
-country = "DE"
-collections = ["community", "language", "regional-europe"]
-topics = ["german", "bitcoin"]
-
-[[relays]]
-url = "wss://nostr.land/"
-name = "nostr.land"
-operator = "nostr.land"
-country = "US"
-software = "NFDB"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["premium"]
-
-[[relays]]
-url = "wss://nostr.lopp.social/"
-name = "lopp.social"
-operator = "Jameson Lopp"
-country = "US"
-collections = ["community", "topic", "regional-americas"]
-topics = ["bitcoin"]
-
-[[relays]]
-url = "wss://nostr.mom/"
-name = "nostr.mom"
-country = "US"
-software = "strfry"
-collections = ["featured", "global", "regional-americas"]
-
-[[relays]]
-url = "wss://nostr.mutinywallet.com/"
-name = "Mutiny Wallet"
-operator = "Mutiny Wallet"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["bitcoin", "lightning"]
-
-[[relays]]
-url = "wss://nostr.oxtr.dev/"
-name = "oxtr"
-operator = "0xtr"
-collections = ["global"]
-
-[[relays]]
-url = "wss://nostr.plebchain.org/"
-name = "Plebchain"
-country = "US"
-collections = ["community", "topic", "regional-americas"]
-topics = ["bitcoin"]
-
-[[relays]]
-url = "wss://nostr.superfriends.online/"
-name = "Superfriends"
-collections = ["global"]
-topics = ["community"]
-
-[[relays]]
-url = "wss://nostr.wine/"
-name = "nostr.wine"
-description = "Paid relay for wine enthusiasts and everyone else."
-operator = "nostr.wine"
-country = "US"
-software = "strfry"
-requirements = { payment = true }
-collections = ["paid", "featured", "regional-americas"]
-topics = ["premium", "popular"]
-
-[[relays]]
-url = "wss://offchain.pub/"
-name = "offchain.pub"
-country = "US"
-collections = ["global", "regional-americas"]
-
-[[relays]]
-url = "wss://pareto.space/"
-name = "Pareto"
-collections = ["community"]
-
-[[relays]]
-url = "wss://personal.relays.land/"
-name = "Personal"
-description = "Relay scoped to personal events only."
-collections = ["special"]
-topics = ["personal"]
-
-[[relays]]
-url = "wss://pow.relays.land/"
-name = "PoW"
-description = "Events must include Proof-of-Work (NIP-13)."
-collections = ["special"]
-topics = ["pow", "nip13"]
-
-[[relays]]
-url = "wss://premium.primal.net/"
-name = "Primal Premium"
-operator = "Primal"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["premium"]
-
-[[relays]]
-url = "wss://primus.nostr1.com/"
-name = "Primus"
-collections = ["community"]
-
-[[relays]]
-url = "wss://purplepag.es/"
-name = "Purple Pages"
-description = "Indexing relay for public metadata (kind 0 / 3 / 10002)."
-country = "US"
-collections = ["search", "special", "regional-americas"]
-topics = ["metadata", "index"]
-
-[[relays]]
-url = "wss://puravida.nostr.land/"
-name = "Pura Vida (nostr.land)"
-operator = "nostr.land"
-country = "US"
-requirements = { payment = true }
-collections = ["paid", "regional-americas"]
-topics = ["premium"]
-
-[[relays]]
-url = "wss://pyramid.fiatjaf.com/"
-name = "Pyramid"
-description = "Invite-only relay with a WoT invitation tree."
-operator = "fiatjaf"
-software = "khatru-pyramid"
-collections = ["featured", "wot", "special"]
-topics = ["invite-only"]
-
-[[relays]]
-url = "wss://relay.0xchat.com/"
-name = "0xchat"
-operator = "0xchat"
-collections = ["community"]
-
-[[relays]]
-url = "wss://relay.44billion.net/"
-name = "44billion"
-description = "Relay with built-in ranking and language-aware search."
-collections = ["community", "search"]
-topics = ["curation"]
-
-[[relays]]
-url = "wss://relay.damus.io/"
-name = "Damus"
-operator = "Damus Team"
-country = "US"
-software = "strfry"
-collections = ["featured", "global", "regional-americas"]
-topics = ["popular", "ios"]
-
-[[relays]]
-url = "wss://relay.divine.video/"
-name = "Divine Video"
-country = "US"
-collections = ["global", "regional-americas"]
-topics = ["video"]
-
-[[relays]]
-url = "wss://relay.getalby.com/"
-name = "Alby"
-operator = "Alby"
-country = "AT"
-collections = ["global", "regional-europe"]
-topics = ["lightning"]
-
-[[relays]]
-url = "wss://relay.mostr.pub/"
-name = "Mostr"
-description = "Bridge relay to the fediverse (ActivityPub)."
-collections = ["bridge"]
-topics = ["fediverse", "activitypub"]
-
-[[relays]]
-url = "wss://relay.nos.social/"
-name = "nos.social"
-operator = "Nos"
-collections = ["global"]
-
-[[relays]]
-url = "wss://relay.nostr.band/"
-name = "Nostr.Band"
-description = "Indexing and full-text search relay (NIP-50)."
-operator = "nostr.band"
-collections = ["featured", "search", "global"]
-topics = ["search", "nip50"]
-
-[[relays]]
-url = "wss://relay.noswhere.com/"
-name = "noswhere"
-operator = "noswhere"
-collections = ["global"]
-
-[[relays]]
-url = "wss://relay.nostr.moe/"
-name = "nostr.moe"
-description = "Anime / otaku community relay."
-country = "JP"
-collections = ["community", "regional-asia"]
-topics = ["anime"]
-
-[[relays]]
-url = "wss://relay.nostr.net/"
-name = "nostr.net"
-operator = "nostr.net"
-collections = ["global"]
-
-[[relays]]
-url = "wss://relay.nostrzh.org/"
-name = "nostrzh"
-description = "Pyramid-style Chinese-language relay."
-country = "XX"
-collections = ["language", "community"]
-topics = ["chinese"]
-
-[[relays]]
-url = "wss://relay.primal.net/"
-name = "Primal"
-operator = "Primal"
-country = "US"
-software = "primal-caching-service"
-collections = ["featured", "global", "regional-americas"]
-topics = ["popular", "caching"]
-
-[[relays]]
-url = "wss://relay.snort.social/"
-name = "Snort"
-operator = "Snort"
-collections = ["global"]
-
-[[relays]]
-url = "wss://relay.wikifreedia.xyz/"
-name = "Wikifreedia"
-description = "Relay backing the Wikifreedia long-form wiki."
-collections = ["topic", "special"]
-topics = ["wiki", "long-form"]
-
-[[relays]]
-url = "wss://relays.land/spatianostra"
-name = "Spatia Nostra"
-collections = ["community"]
-topics = ["spatianostra"]
-
-[[relays]]
-url = "wss://theforest.nostr1.com/"
-name = "The Forest"
-collections = ["community"]
-
-[[relays]]
-url = "wss://thecitadel.nostr1.com/"
-name = "The Citadel"
-collections = ["community"]
-
-[[relays]]
-url = "wss://topic.relays.land/ask"
-name = "Topic: Ask"
-description = "Questions addressed to the community."
-collections = ["topic"]
-topics = ["qna"]
-
-[[relays]]
-url = "wss://topic.relays.land/complaint"
-name = "Topic: Complaint"
-collections = ["topic"]
-
-[[relays]]
-url = "wss://topic.relays.land/left"
-name = "Topic: Left"
-collections = ["topic"]
-
-[[relays]]
-url = "wss://topic.relays.land/praise"
-name = "Topic: Praise"
-collections = ["topic"]
-
-[[relays]]
-url = "wss://topic.relays.land/uncommon"
-name = "Topic: Uncommon"
-collections = ["topic"]
-
-[[relays]]
-url = "wss://topic.relays.land/whales"
-name = "Topic: Whales"
-collections = ["topic"]
-
-[[relays]]
-url = "wss://trending.relays.land/"
-name = "Trending"
-description = "Relay showcasing trending Nostr content."
-collections = ["featured", "special"]
-topics = ["trending"]
-
-[[relays]]
-url = "wss://wot.dergigi.com/"
-name = "Gigi WoT"
-operator = "dergigi"
-collections = ["wot"]
-
-[[relays]]
-url = "wss://wot.girino.org/"
-name = "Girino WoT"
-operator = "girino"
-collections = ["wot"]
-
-[[relays]]
-url = "wss://wot.nostr.net/"
-name = "nostr.net WoT"
-operator = "nostr.net"
-collections = ["wot"]
-
-[[relays]]
-url = "wss://wot.utxo.one/"
-name = "UTXO WoT"
-operator = "utxo.one"
-collections = ["wot"]
-
-# -----------------------------------------------------------------------------
-# Regional — Japan
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://nrelay-jp.c-stellar.net/"
-name = "c-stellar JP"
-country = "JP"
-collections = ["regional-asia", "language"]
-topics = ["japanese"]
-
-[[relays]]
-url = "wss://relay-jp.nostr.wirednet.jp/"
-name = "WiredNet JP"
-country = "JP"
-collections = ["regional-asia", "language"]
-topics = ["japanese"]
-
-[[relays]]
-url = "wss://relay.nostr.or.jp/"
-name = "nostr.or.jp"
-country = "JP"
-collections = ["regional-asia", "language"]
-topics = ["japanese"]
-
-[[relays]]
-url = "wss://relay.nostr.wirednet.jp/"
-name = "WiredNet"
-country = "JP"
-collections = ["regional-asia", "language"]
-topics = ["japanese"]
-
-[[relays]]
-url = "wss://yabu.me/"
-name = "yabu.me"
-description = "Japanese-language aggregator relay."
-country = "JP"
-collections = ["regional-asia", "language", "community"]
-topics = ["japanese", "aggregator"]
-
-# -----------------------------------------------------------------------------
-# Regional — Europe
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://nostr.bitcoinplebs.de/"
-name = "Bitcoin Plebs DE"
-country = "DE"
-collections = ["regional-europe", "language", "topic"]
-topics = ["german", "bitcoin"]
-
-[[relays]]
-url = "wss://relay.mleku.dev/"
-name = "mleku"
-country = "DE"
-collections = ["regional-europe"]
-
-[[relays]]
-url = "wss://relay.bitcoinpark.com/"
-name = "Bitcoin Park"
-country = "DE"
-collections = ["regional-europe", "topic"]
-topics = ["bitcoin"]
-
-[[relays]]
-url = "wss://relay.tchncs.de/"
-name = "tchncs"
-country = "DE"
-collections = ["regional-europe"]
-
-[[relays]]
-url = "wss://nos.xmark.cc/"
-name = "xmark"
-country = "GB"
-collections = ["regional-europe"]
-
-# -----------------------------------------------------------------------------
-# Regional — Americas (additional)
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://nostr.zebedee.cloud/"
-name = "Zebedee"
-operator = "Zebedee"
-country = "US"
-collections = ["regional-americas", "topic"]
-topics = ["lightning", "gaming"]
-
-[[relays]]
-url = "wss://relay.coinos.io/"
-name = "Coinos"
-operator = "Coinos"
-country = "CA"
-collections = ["regional-americas", "topic"]
-topics = ["lightning", "bitcoin"]
-
-[[relays]]
-url = "wss://relay.fountain.fm/"
-name = "Fountain"
-operator = "Fountain.fm"
-collections = ["regional-americas", "topic"]
-topics = ["podcast", "lightning"]
-
-[[relays]]
-url = "wss://relay.nostr.ai/"
-name = "nostr.ai"
-country = "US"
-collections = ["regional-americas"]
-
-[[relays]]
-url = "wss://relay.npub.bar/"
-name = "npub.bar"
-collections = ["regional-americas"]
-
-[[relays]]
-url = "wss://relay.olas.app/"
-name = "Olas"
-operator = "Olas"
-collections = ["regional-americas", "topic"]
-topics = ["photo"]
-
-# -----------------------------------------------------------------------------
-# Groups & communities (NIP-29)
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://relay.groups.nip29.com/"
-name = "NIP-29 Groups"
-description = "Group-chat relay built on khatru + relay29."
-software = "groups-relay"
-collections = ["special", "community"]
-topics = ["groups", "nip29", "chat"]
-
-# -----------------------------------------------------------------------------
-# Bot / algorithmic feeds
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "wss://algo.utxo.one/"
+# `[[collection]]` tables define curated collections in display order; each
+# needs `id`, a localized `name` (with `en`) and a non-empty `relays` list of
+# canonical `wss://` URLs in editorial order.
+#
+# `[[relay]]` tables hold per-relay editorial overrides (`name`,
+# `description`, `languages`, `nsfw`) and appear only when a relay needs one,
+# sorted by `url`.
+
+[[collection]]
+id          = "featured"
+name        = { en = "Featured", zh-Hans = "精选" }
+description = { en = "Hand-picked, widely adopted relays with a strong operational track record.", zh-Hans = "精心挑选、使用广泛、运行稳定的中继。" }
+
+relays = [
+  "wss://nos.lol/",
+  "wss://nostr.mom/",
+  "wss://nostr.wine/",
+  "wss://pyramid.fiatjaf.com/",
+  "wss://relay.damus.io/",
+  "wss://relay.nostr.band/",
+  "wss://relay.primal.net/",
+  "wss://trending.relays.land/",
+]
+
+[[collection]]
+id          = "global"
+name        = { en = "Global Feeds", zh-Hans = "综合" }
+description = { en = "General-purpose relays that accept events from any pubkey.", zh-Hans = "接受任何公钥发布内容的通用中继。" }
+
+relays = [
+  "wss://ditto.pub/relay",
+  "wss://nos.lol/",
+  "wss://nostr-01.yakihonne.com/",
+  "wss://nostr.mom/",
+  "wss://nostr.oxtr.dev/",
+  "wss://nostr.superfriends.online/",
+  "wss://offchain.pub/",
+  "wss://relay.damus.io/",
+  "wss://relay.divine.video/",
+  "wss://relay.getalby.com/",
+  "wss://relay.nos.social/",
+  "wss://relay.nostr.band/",
+  "wss://relay.nostr.net/",
+  "wss://relay.noswhere.com/",
+  "wss://relay.primal.net/",
+  "wss://relay.snort.social/",
+]
+
+[[collection]]
+id          = "community"
+name        = { en = "Communities", zh-Hans = "社区" }
+description = { en = "Relays focused on community-driven content and curation.", zh-Hans = "专注社区内容与社区策展的中继。" }
+
+relays = [
+  "wss://bitcoiner.social/",
+  "wss://christpill.nostr1.com/",
+  "wss://groups.0xchat.com/",
+  "wss://lang.relays.land/ar",
+  "wss://lang.relays.land/de",
+  "wss://lang.relays.land/en",
+  "wss://lang.relays.land/es",
+  "wss://lang.relays.land/fr",
+  "wss://lang.relays.land/it",
+  "wss://lang.relays.land/ja",
+  "wss://lang.relays.land/ko",
+  "wss://lang.relays.land/pt",
+  "wss://lang.relays.land/ru",
+  "wss://lang.relays.land/tr",
+  "wss://lang.relays.land/vi",
+  "wss://lang.relays.land/zh",
+  "wss://noornode.nostr1.com/",
+  "wss://nos.xmark.cc/",
+  "wss://nostr.bitcoiner.social/",
+  "wss://nostr.einundzwanzig.space/",
+  "wss://nostr.lopp.social/",
+  "wss://nostr.plebchain.org/",
+  "wss://nrelay-jp.c-stellar.net/",
+  "wss://pareto.space/",
+  "wss://primus.nostr1.com/",
+  "wss://relay-jp.nostr.wirednet.jp/",
+  "wss://relay.0xchat.com/",
+  "wss://relay.44billion.net/",
+  "wss://relay.groups.nip29.com/",
+  "wss://relay.mleku.dev/",
+  "wss://relay.nostr.ai/",
+  "wss://relay.nostr.moe/",
+  "wss://relay.nostr.or.jp/",
+  "wss://relay.nostr.wirednet.jp/",
+  "wss://relay.nostrzh.org/",
+  "wss://relay.npub.bar/",
+  "wss://relay.tchncs.de/",
+  "wss://relays.land/spatianostra",
+  "wss://thecitadel.nostr1.com/",
+  "wss://theforest.nostr1.com/",
+  "wss://yabu.me/",
+]
+
+[[collection]]
+id          = "topic"
+name        = { en = "Interest Groups", zh-Hans = "兴趣话题" }
+description = { en = "Single-topic relays for focused discussions.", zh-Hans = "围绕单一话题讨论的中继。" }
+
+relays = [
+  "wss://bitcoiner.social/",
+  "wss://nostr.bitcoiner.social/",
+  "wss://nostr.bitcoinplebs.de/",
+  "wss://nostr.lopp.social/",
+  "wss://nostr.plebchain.org/",
+  "wss://nostr.zebedee.cloud/",
+  "wss://relay.bitcoinpark.com/",
+  "wss://relay.coinos.io/",
+  "wss://relay.fountain.fm/",
+  "wss://relay.olas.app/",
+  "wss://relay.wikifreedia.xyz/",
+  "wss://topic.relays.land/ask",
+  "wss://topic.relays.land/complaint",
+  "wss://topic.relays.land/left",
+  "wss://topic.relays.land/praise",
+  "wss://topic.relays.land/uncommon",
+  "wss://topic.relays.land/whales",
+]
+
+[[collection]]
+id          = "special"
+name        = { en = "Special Purpose", zh-Hans = "特殊用途" }
+description = { en = "Relays with unique filtering rules, display mechanisms, or event constraints.", zh-Hans = "有独特过滤规则、展示方式或事件限制的中继。" }
+
+relays = [
+  "wss://140.f7z.io/",
+  "wss://bookmarks.relays.land/",
+  "wss://bucket.coracle.social/",
+  "wss://feedback.relays.land/",
+  "wss://groups.0xchat.com/",
+  "wss://haven.girino.org/outbox",
+  "wss://impromptu.relays.land/",
+  "wss://inbox.nostr.wine/",
+  "wss://lockbox.relays.land/",
+  "wss://njump.me/",
+  "wss://personal.relays.land/",
+  "wss://pow.relays.land/",
+  "wss://purplepag.es/",
+  "wss://pyramid.fiatjaf.com/",
+  "wss://relay.groups.nip29.com/",
+  "wss://relay.wikifreedia.xyz/",
+  "wss://trending.relays.land/",
+]
+
+[[collection]]
+id          = "search"
+name        = { en = "Search and Index", zh-Hans = "搜索与索引" }
+description = { en = "Relays exposing NIP-50 search or acting as indexers.", zh-Hans = "提供 NIP-50 搜索或充当索引的中继。" }
+
+relays = [
+  "wss://nfrelay.app/",
+  "wss://purplepag.es/",
+  "wss://relay.44billion.net/",
+  "wss://relay.nostr.band/",
+]
+
+[[collection]]
+id          = "bot"
+name        = { en = "Automated Feeds", zh-Hans = "自动化信息流" }
+description = { en = "Relays that primarily serve bot, algorithm, or news feeds.", zh-Hans = "主要提供机器人、算法或新闻信息流的中继。" }
+
+relays = [
+  "wss://algo.utxo.one/",
+  "wss://news.utxo.one/",
+  "wss://rss.nos.social/",
+  "wss://rsslay.fiatjaf.com/",
+]
+
+[[collection]]
+id          = "paid"
+name        = { en = "Paid Relays", zh-Hans = "付费中继" }
+description = { en = "Relays that require payment to post.", zh-Hans = "发帖需要付费的中继。" }
+
+relays = [
+  "wss://atlas.nostr.land/",
+  "wss://eden.nostr.land/",
+  "wss://filter.nostr.wine/",
+  "wss://inbox.nostr.wine/",
+  "wss://nostr.land/",
+  "wss://nostr.mutinywallet.com/",
+  "wss://nostr.wine/",
+  "wss://premium.primal.net/",
+  "wss://puravida.nostr.land/",
+]
+
+[[collection]]
+id          = "wot"
+name        = { en = "Web of Trust", zh-Hans = "信任网络" }
+description = { en = "Relays that filter content by web-of-trust policies.", zh-Hans = "按信任网络策略过滤内容的中继。" }
+
+relays = [
+  "wss://haven.girino.org/outbox",
+  "wss://pyramid.fiatjaf.com/",
+  "wss://wot.dergigi.com/",
+  "wss://wot.girino.org/",
+  "wss://wot.nostr.net/",
+  "wss://wot.utxo.one/",
+]
+
+[[collection]]
+id          = "bridge"
+name        = { en = "Bridges and Aggregators", zh-Hans = "桥接与聚合" }
+description = { en = "Relays that bridge other networks such as ActivityPub and RSS, or aggregate content.", zh-Hans = "桥接 ActivityPub、RSS 等其他网络或聚合内容的中继。" }
+
+relays = [
+  "wss://ditto.pub/relay",
+  "wss://filter.nostr.wine/",
+  "wss://nfrelay.app/",
+  "wss://relay.mostr.pub/",
+  "wss://rss.nos.social/",
+  "wss://rsslay.fiatjaf.com/",
+]
+
+[[relay]]
+url         = "wss://140.f7z.io/"
+name        = "140"
+description = { en = "Short-form relay limiting content to 140 characters.", zh-Hans = "限制内容为 140 字符的短文中继。" }
+
+[[relay]]
+url  = "wss://algo.utxo.one/"
 name = "UTXO Algo"
-operator = "utxo.one"
-collections = ["bot"]
-topics = ["algorithm"]
 
-[[relays]]
-url = "wss://rsslay.fiatjaf.com/"
-name = "rsslay"
-description = "RSS-to-Nostr bridge."
-operator = "fiatjaf"
-collections = ["bot", "bridge"]
-topics = ["rss"]
+[[relay]]
+url  = "wss://atlas.nostr.land/"
+name = "Atlas (nostr.land)"
 
-[[relays]]
-url = "wss://rss.nos.social/"
+[[relay]]
+url  = "wss://bitcoiner.social/"
+name = "Bitcoiner Social"
+
+[[relay]]
+url         = "wss://bookmarks.relays.land/"
+name        = "Bookmarks"
+description = { en = "Relay scoped to bookmark-style events.", zh-Hans = "只收录书签类事件的中继。" }
+
+[[relay]]
+url  = "wss://bucket.coracle.social/"
+name = "Coracle Bucket"
+
+[[relay]]
+url  = "wss://christpill.nostr1.com/"
+name = "Christpill"
+
+[[relay]]
+url  = "wss://ditto.pub/relay"
+name = "Ditto"
+
+[[relay]]
+url  = "wss://eden.nostr.land/"
+name = "Eden (nostr.land)"
+
+[[relay]]
+url         = "wss://feedback.relays.land/"
+name        = "Feedback"
+description = { en = "Feedback-scoped relay on the relays.land network.", zh-Hans = "relays.land 网络中只收录反馈的中继。" }
+
+[[relay]]
+url  = "wss://filter.nostr.wine/"
+name = "filter.nostr.wine"
+
+[[relay]]
+url  = "wss://groups.0xchat.com/"
+name = "0xchat Groups"
+
+[[relay]]
+url  = "wss://haven.girino.org/outbox"
+name = "Girino Haven Outbox"
+
+[[relay]]
+url         = "wss://impromptu.relays.land/"
+name        = "Impromptu"
+description = { en = "Ephemeral impromptu events.", zh-Hans = "即兴发布的临时事件中继。" }
+
+[[relay]]
+url  = "wss://inbox.nostr.wine/"
+name = "inbox.nostr.wine"
+
+[[relay]]
+url       = "wss://lang.relays.land/ar"
+name      = "lang: Arabic"
+languages = ["ar"]
+
+[[relay]]
+url       = "wss://lang.relays.land/de"
+name      = "lang: German"
+languages = ["de"]
+
+[[relay]]
+url       = "wss://lang.relays.land/en"
+name      = "lang: English"
+languages = ["en"]
+
+[[relay]]
+url       = "wss://lang.relays.land/es"
+name      = "lang: Spanish"
+languages = ["es"]
+
+[[relay]]
+url       = "wss://lang.relays.land/fr"
+name      = "lang: French"
+languages = ["fr"]
+
+[[relay]]
+url       = "wss://lang.relays.land/it"
+name      = "lang: Italian"
+languages = ["it"]
+
+[[relay]]
+url       = "wss://lang.relays.land/ja"
+name      = "lang: Japanese"
+languages = ["ja"]
+
+[[relay]]
+url       = "wss://lang.relays.land/ko"
+name      = "lang: Korean"
+languages = ["ko"]
+
+[[relay]]
+url       = "wss://lang.relays.land/pt"
+name      = "lang: Portuguese"
+languages = ["pt"]
+
+[[relay]]
+url       = "wss://lang.relays.land/ru"
+name      = "lang: Russian"
+languages = ["ru"]
+
+[[relay]]
+url       = "wss://lang.relays.land/tr"
+name      = "lang: Turkish"
+languages = ["tr"]
+
+[[relay]]
+url       = "wss://lang.relays.land/vi"
+name      = "lang: Vietnamese"
+languages = ["vi"]
+
+[[relay]]
+url       = "wss://lang.relays.land/zh"
+name      = "lang: Chinese"
+languages = ["zh"]
+
+[[relay]]
+url         = "wss://lockbox.relays.land/"
+name        = "Lockbox"
+description = { en = "Events are write-only and hidden from general reads.", zh-Hans = "事件只写、对普通读取隐藏的中继。" }
+
+[[relay]]
+url  = "wss://news.utxo.one/"
+name = "UTXO News"
+
+[[relay]]
+url         = "wss://nfrelay.app/"
+name        = "nfrelay (nostr-filter-relay)"
+description = { en = "Aggregator relay with content filtering (SFW/NSFW, language, topic).", zh-Hans = "带内容过滤（SFW/NSFW、语言、话题）的聚合中继。" }
+
+[[relay]]
+url         = "wss://njump.me/"
+name        = "njump"
+description = { en = "Companion relay to njump.me content previews.", zh-Hans = "njump.me 内容预览的配套中继。" }
+
+[[relay]]
+url  = "wss://noornode.nostr1.com/"
+name = "Noor Node"
+
+[[relay]]
+url  = "wss://nos.lol/"
+name = "nos.lol"
+
+[[relay]]
+url  = "wss://nos.xmark.cc/"
+name = "xmark"
+
+[[relay]]
+url  = "wss://nostr-01.yakihonne.com/"
+name = "YakiHonne"
+
+[[relay]]
+url  = "wss://nostr.bitcoiner.social/"
+name = "nostr.bitcoiner.social"
+
+[[relay]]
+url       = "wss://nostr.bitcoinplebs.de/"
+name      = "Bitcoin Plebs DE"
+languages = ["de"]
+
+[[relay]]
+url         = "wss://nostr.einundzwanzig.space/"
+name        = "Einundzwanzig"
+description = { en = "Relay for the German bitcoin podcast community.", zh-Hans = "德国比特币播客社区的中继。" }
+languages   = ["de"]
+
+[[relay]]
+url  = "wss://nostr.land/"
+name = "nostr.land"
+
+[[relay]]
+url  = "wss://nostr.lopp.social/"
+name = "lopp.social"
+
+[[relay]]
+url  = "wss://nostr.mom/"
+name = "nostr.mom"
+
+[[relay]]
+url  = "wss://nostr.mutinywallet.com/"
+name = "Mutiny Wallet"
+
+[[relay]]
+url  = "wss://nostr.oxtr.dev/"
+name = "oxtr"
+
+[[relay]]
+url  = "wss://nostr.plebchain.org/"
+name = "Plebchain"
+
+[[relay]]
+url  = "wss://nostr.superfriends.online/"
+name = "Superfriends"
+
+[[relay]]
+url         = "wss://nostr.wine/"
+name        = "nostr.wine"
+description = { en = "Paid relay for wine enthusiasts and everyone else.", zh-Hans = "面向葡萄酒爱好者及所有人的付费中继。" }
+
+[[relay]]
+url  = "wss://nostr.zebedee.cloud/"
+name = "Zebedee"
+
+[[relay]]
+url       = "wss://nrelay-jp.c-stellar.net/"
+name      = "c-stellar JP"
+languages = ["ja"]
+
+[[relay]]
+url  = "wss://offchain.pub/"
+name = "offchain.pub"
+
+[[relay]]
+url  = "wss://pareto.space/"
+name = "Pareto"
+
+[[relay]]
+url         = "wss://personal.relays.land/"
+name        = "Personal"
+description = { en = "Relay scoped to personal events only.", zh-Hans = "只收录个人事件的中继。" }
+
+[[relay]]
+url         = "wss://pow.relays.land/"
+name        = "PoW"
+description = { en = "Events must include Proof-of-Work (NIP-13).", zh-Hans = "事件必须包含工作量证明（NIP-13）的中继。" }
+
+[[relay]]
+url  = "wss://premium.primal.net/"
+name = "Primal Premium"
+
+[[relay]]
+url  = "wss://primus.nostr1.com/"
+name = "Primus"
+
+[[relay]]
+url  = "wss://puravida.nostr.land/"
+name = "Pura Vida (nostr.land)"
+
+[[relay]]
+url         = "wss://purplepag.es/"
+name        = "Purple Pages"
+description = { en = "Indexing relay for public metadata (kind 0 / 3 / 10002).", zh-Hans = "索引公开元数据（kind 0 / 3 / 10002）的中继。" }
+
+[[relay]]
+url         = "wss://pyramid.fiatjaf.com/"
+name        = "Pyramid"
+description = { en = "Invite-only relay with a WoT invitation tree.", zh-Hans = "带信任网络邀请树的邀请制中继。" }
+
+[[relay]]
+url       = "wss://relay-jp.nostr.wirednet.jp/"
+name      = "WiredNet JP"
+languages = ["ja"]
+
+[[relay]]
+url  = "wss://relay.0xchat.com/"
+name = "0xchat"
+
+[[relay]]
+url         = "wss://relay.44billion.net/"
+name        = "44billion"
+description = { en = "Relay with built-in ranking and language-aware search.", zh-Hans = "内置排序与语言感知搜索的中继。" }
+
+[[relay]]
+url  = "wss://relay.bitcoinpark.com/"
+name = "Bitcoin Park"
+
+[[relay]]
+url  = "wss://relay.coinos.io/"
+name = "Coinos"
+
+[[relay]]
+url  = "wss://relay.damus.io/"
+name = "Damus"
+
+[[relay]]
+url  = "wss://relay.divine.video/"
+name = "Divine Video"
+
+[[relay]]
+url  = "wss://relay.fountain.fm/"
+name = "Fountain"
+
+[[relay]]
+url  = "wss://relay.getalby.com/"
+name = "Alby"
+
+[[relay]]
+url         = "wss://relay.groups.nip29.com/"
+name        = "NIP-29 Groups"
+description = { en = "Group-chat relay built on khatru + relay29.", zh-Hans = "基于 khatru + relay29 的群聊中继。" }
+
+[[relay]]
+url  = "wss://relay.mleku.dev/"
+name = "mleku"
+
+[[relay]]
+url         = "wss://relay.mostr.pub/"
+name        = "Mostr"
+description = { en = "Bridge relay to the fediverse (ActivityPub).", zh-Hans = "桥接联邦宇宙（ActivityPub）的中继。" }
+
+[[relay]]
+url  = "wss://relay.nos.social/"
+name = "nos.social"
+
+[[relay]]
+url  = "wss://relay.nostr.ai/"
+name = "nostr.ai"
+
+[[relay]]
+url         = "wss://relay.nostr.band/"
+name        = "Nostr.Band"
+description = { en = "Indexing and full-text search relay (NIP-50).", zh-Hans = "索引与全文搜索中继（NIP-50）。" }
+
+[[relay]]
+url         = "wss://relay.nostr.moe/"
+name        = "nostr.moe"
+description = { en = "Anime / otaku community relay.", zh-Hans = "动漫/御宅社区中继。" }
+
+[[relay]]
+url  = "wss://relay.nostr.net/"
+name = "nostr.net"
+
+[[relay]]
+url       = "wss://relay.nostr.or.jp/"
+name      = "nostr.or.jp"
+languages = ["ja"]
+
+[[relay]]
+url       = "wss://relay.nostr.wirednet.jp/"
+name      = "WiredNet"
+languages = ["ja"]
+
+[[relay]]
+url  = "wss://relay.noswhere.com/"
+name = "noswhere"
+
+[[relay]]
+url         = "wss://relay.nostrzh.org/"
+name        = "nostrzh"
+description = { en = "Pyramid-style Chinese-language relay.", zh-Hans = "Pyramid 风格的中文中继。" }
+languages   = ["zh"]
+
+[[relay]]
+url  = "wss://relay.npub.bar/"
+name = "npub.bar"
+
+[[relay]]
+url  = "wss://relay.olas.app/"
+name = "Olas"
+
+[[relay]]
+url  = "wss://relay.primal.net/"
+name = "Primal"
+
+[[relay]]
+url  = "wss://relay.snort.social/"
+name = "Snort"
+
+[[relay]]
+url  = "wss://relay.tchncs.de/"
+name = "tchncs"
+
+[[relay]]
+url         = "wss://relay.wikifreedia.xyz/"
+name        = "Wikifreedia"
+description = { en = "Relay backing the Wikifreedia long-form wiki.", zh-Hans = "支撑 Wikifreedia 长文维基的中继。" }
+
+[[relay]]
+url  = "wss://relays.land/spatianostra"
+name = "Spatia Nostra"
+
+[[relay]]
+url  = "wss://rss.nos.social/"
 name = "Nos RSS"
-operator = "Nos"
-collections = ["bot", "bridge"]
-topics = ["rss"]
 
-# -----------------------------------------------------------------------------
-# Language collections — lang.relays.land (sample of popular languages;
-# the full list is intentionally trimmed — add more via PR if needed)
-# -----------------------------------------------------------------------------
+[[relay]]
+url         = "wss://rsslay.fiatjaf.com/"
+name        = "rsslay"
+description = { en = "RSS-to-Nostr bridge.", zh-Hans = "RSS 转 Nostr 桥接中继。" }
 
-[[relays]]
-url = "wss://lang.relays.land/ar"
-name = "lang: Arabic"
-collections = ["language"]
-topics = ["arabic"]
+[[relay]]
+url  = "wss://thecitadel.nostr1.com/"
+name = "The Citadel"
 
-[[relays]]
-url = "wss://lang.relays.land/de"
-name = "lang: German"
-collections = ["language", "regional-europe"]
-topics = ["german"]
+[[relay]]
+url  = "wss://theforest.nostr1.com/"
+name = "The Forest"
 
-[[relays]]
-url = "wss://lang.relays.land/en"
-name = "lang: English"
-collections = ["language"]
-topics = ["english"]
+[[relay]]
+url         = "wss://topic.relays.land/ask"
+name        = "Topic: Ask"
+description = { en = "Questions addressed to the community.", zh-Hans = "面向社区的提问。" }
 
-[[relays]]
-url = "wss://lang.relays.land/es"
-name = "lang: Spanish"
-collections = ["language"]
-topics = ["spanish"]
+[[relay]]
+url  = "wss://topic.relays.land/complaint"
+name = "Topic: Complaint"
 
-[[relays]]
-url = "wss://lang.relays.land/fr"
-name = "lang: French"
-collections = ["language", "regional-europe"]
-topics = ["french"]
+[[relay]]
+url  = "wss://topic.relays.land/left"
+name = "Topic: Left"
 
-[[relays]]
-url = "wss://lang.relays.land/it"
-name = "lang: Italian"
-collections = ["language", "regional-europe"]
-topics = ["italian"]
+[[relay]]
+url  = "wss://topic.relays.land/praise"
+name = "Topic: Praise"
 
-[[relays]]
-url = "wss://lang.relays.land/ja"
-name = "lang: Japanese"
-collections = ["language", "regional-asia"]
-topics = ["japanese"]
+[[relay]]
+url  = "wss://topic.relays.land/uncommon"
+name = "Topic: Uncommon"
 
-[[relays]]
-url = "wss://lang.relays.land/ko"
-name = "lang: Korean"
-collections = ["language", "regional-asia"]
-topics = ["korean"]
+[[relay]]
+url  = "wss://topic.relays.land/whales"
+name = "Topic: Whales"
 
-[[relays]]
-url = "wss://lang.relays.land/pt"
-name = "lang: Portuguese"
-collections = ["language"]
-topics = ["portuguese"]
+[[relay]]
+url         = "wss://trending.relays.land/"
+name        = "Trending"
+description = { en = "Relay showcasing trending Nostr content.", zh-Hans = "展示 Nostr 热门内容的中继。" }
 
-[[relays]]
-url = "wss://lang.relays.land/ru"
-name = "lang: Russian"
-collections = ["language"]
-topics = ["russian"]
+[[relay]]
+url  = "wss://wot.dergigi.com/"
+name = "Gigi WoT"
 
-[[relays]]
-url = "wss://lang.relays.land/tr"
-name = "lang: Turkish"
-collections = ["language"]
-topics = ["turkish"]
+[[relay]]
+url  = "wss://wot.girino.org/"
+name = "Girino WoT"
 
-[[relays]]
-url = "wss://lang.relays.land/vi"
-name = "lang: Vietnamese"
-collections = ["language", "regional-asia"]
-topics = ["vietnamese"]
+[[relay]]
+url  = "wss://wot.nostr.net/"
+name = "nostr.net WoT"
 
-[[relays]]
-url = "wss://lang.relays.land/zh"
-name = "lang: Chinese"
-collections = ["language", "regional-asia"]
-topics = ["chinese"]
+[[relay]]
+url  = "wss://wot.utxo.one/"
+name = "UTXO WoT"
 
-# -----------------------------------------------------------------------------
-# Tor / onion relays (ws:// scheme is intentional — .onion requires Tor)
-# -----------------------------------------------------------------------------
-
-[[relays]]
-url = "ws://oxtrdevav64z64yb7x6rjg4ntzqjhedm5b5zjqulugknhzr46ny2qbad.onion"
-name = "oxtr.dev (onion)"
-description = "Tor mirror of wss://nostr.oxtr.dev/."
-operator = "0xtr"
-collections = ["tor"]
-
-[[relays]]
-url = "ws://skzzn6cimfdv5e2phjc4yr5v7ikbxtn5f7dkwn5c7v47tduzlbosqmqd.onion"
-name = "Snort (onion)"
-description = "Tor mirror of wss://relay.snort.social/."
-operator = "Snort"
-collections = ["tor"]
-
-[[relays]]
-url = "ws://nostrland2gdw7g3y77ctftovvil76vquipymo7tsctlxpiwknevzfid.onion"
-name = "nostr.land (onion)"
-description = "Tor mirror of the paid wss://nostr.land/ relay."
-operator = "nostr.land"
-requirements = { payment = true }
-collections = ["tor", "paid"]
-
-[[relays]]
-url = "ws://nostrwinemdptvqukjttinajfeedhf46hfd5bz2aj2q5uwp7zros3nad.onion"
-name = "nostr.wine (onion)"
-description = "Tor mirror of the paid wss://nostr.wine/ relay."
-operator = "nostr.wine"
-requirements = { payment = true }
-collections = ["tor", "paid"]
-
-[[relays]]
-url = "ws://bitcoinr6de5lkvx4tpwdmzrdfdpla5sya2afwpcabjup2xpi5dulbad.onion"
-name = "bitcoiner.social (onion)"
-operator = "bitcoiner.social"
-collections = ["tor", "topic"]
-topics = ["bitcoin"]
+[[relay]]
+url         = "wss://yabu.me/"
+name        = "yabu.me"
+description = { en = "Japanese-language aggregator relay.", zh-Hans = "日语聚合中继。" }
+languages   = ["ja"]

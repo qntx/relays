@@ -1,25 +1,29 @@
 [package]
-name = "relays-core"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
+name                 = "relays-core"
+version.workspace    = true
+edition.workspace    = true
+license.workspace    = true
 repository.workspace = true
-homepage.workspace = true
-authors.workspace = true
-readme.workspace = true
-keywords.workspace = true
+homepage.workspace   = true
+authors.workspace    = true
+readme.workspace     = true
+keywords.workspace   = true
 categories.workspace = true
-description = "Core domain model, validation, health tracking and rendering for the awesome-nostr-relays catalog"
+description          = "IO-free domain model for the relay directory: curation, observations, derivation and artefacts"
+publish.workspace    = true
 
 [dependencies]
-anyhow.workspace = true
-chrono.workspace = true
-schemars.workspace = true
-serde.workspace = true
+schemars.workspace   = true
+serde.workspace      = true
+strum.workspace      = true
 serde_json.workspace = true
-thiserror.workspace = true
-toml.workspace = true
-url.workspace = true
+thiserror.workspace  = true
+toml.workspace       = true
+url.workspace        = true
+
+[dev-dependencies]
+insta.workspace      = true
+jsonschema.workspace = true
 
 [lints]
 workspace = true

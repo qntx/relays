@@ -1,0 +1,79 @@
+---
+source: crates/core/tests/directory.rs
+expression: doc
+---
+{
+  "version": 1,
+  "generated_at": "<ts>",
+  "collections": [
+    {
+      "id": "featured",
+      "kind": "curated",
+      "name": {
+        "en": "Featured",
+        "zh-Hans": "精选"
+      },
+      "description": {
+        "en": "Hand-picked relays.",
+        "zh-Hans": "精心挑选的中继。"
+      },
+      "relays": [
+        "wss://a.example/",
+        "wss://b.example/x"
+      ]
+    },
+    {
+      "id": "global",
+      "kind": "curated",
+      "name": {
+        "en": "Global Feeds"
+      },
+      "relays": [
+        "wss://b.example/x"
+      ]
+    }
+  ],
+  "relays": [
+    {
+      "url": "wss://a.example/",
+      "name": "Relay A",
+      "description": {
+        "en": "The A relay.",
+        "zh-Hans": "A 中继。"
+      },
+      "status": "online",
+      "uptime": 1.0,
+      "rtt": {
+        "open": 120,
+        "read": 80
+      },
+      "nips": [],
+      "requirements": {
+        "auth": false,
+        "payment": false,
+        "pow": false,
+        "restricted_writes": false
+      },
+      "languages": [
+        "en"
+      ],
+      "nsfw": false,
+      "score": 100
+    },
+    {
+      "url": "wss://b.example/x",
+      "status": "offline",
+      "uptime": 0.0,
+      "nips": [],
+      "requirements": {
+        "auth": false,
+        "payment": false,
+        "pow": false,
+        "restricted_writes": false
+      },
+      "languages": [],
+      "nsfw": false,
+      "score": 0
+    }
+  ]
+}

@@ -4,6 +4,58 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - Unreleased
+
+**Breaking**: the repository is rebuilt as a self-contained monitoring
+directory. The old catalog pipeline, health-state model, GitHub
+Pages site and `data` branch publication are removed without a compatibility
+path.
+
+### Added
+
+- **New curation format** in `relays.toml`: `[[collection]]` entries with
+  localized names/descriptions and `[[relay]]` editorial overrides (name,
+  description, languages, nsfw). Every URL must be canonical `wss://`.
+- **`relays-core`**: IO-free domain crate — canonical URLs,
+  curation validation, observation types, NIP-11 lenient extraction,
+  deterministic derivation (time-weighted uptime, RTT medians, requirements,
+  score), and `v1` artefact models with `directory::schema()`.
+- **`relays` binary**: fixed-upstream DNS resolution (1.1.1.1 and
+  9.9.9.9 over UDP+TCP, never `resolv.conf`), public-address policy, TCP/TLS/
+  WebSocket probing with reason-coded outcomes, NIP-11 fetching, SQLite
+  storage, exponential backoff scheduling, and `object_store` publication
+  (`file://` and `s3://`) with content-hash skips.
+- **`v1/` artefacts**: `catalog.json`, `index.json`, `schema.json`,
+  `status.json`, `report.json`, published with JSON content type and shared
+  cache headers.
+- **CLI**: `validate`, `probe <url>`, `run [--once]`,
+  `report <source>`; flags mirror the `RELAYS_*` environment variables.
+- **Container image**: multi-stage Dockerfile on
+  `gcr.io/distroless/cc-debian12:nonroot`, published to `ghcr.io/qntx/relays`
+  on every `main` push.
+- **`report.yml`** workflow: weekly `relays report` run that opens or updates
+  the single "Relay report" issue.
+- **Licensing**: the repository is dual-licensed `MIT OR Apache-2.0`
+  (`LICENSE-MIT` + `LICENSE-APACHE`), matching `Cargo.toml`.
+- **TOML formatting**: `.taplo.toml` + a `taplo` CI job keep every TOML file
+  consistently formatted (aligned `=`; one URL per line in `relays.toml`).
+
+### Removed
+
+- The generated relay list in `README.md` and the `relays readme`
+  subcommand; the README is now prose only.
+- `crates/cli`, `crates/probe` and the previous `crates/core` sources; the
+  workspace is now `crates/core` + `crates/relays` only.
+- The health state machine, `relays.json`/`health.json`/`api/` artefacts,
+  `schema_version`, `nip66.json`, `badge.json` and the `dead` subcommand.
+- The `web/` site, `CNAME`, `notes/`, and the `build`/`publish`/`pages`/
+  `health-check`/`dead-relays`/`ci-docs` workflows.
+- `ws://` and `.onion` entries plus the `regional-*`, `language` and `tor`
+  collections; `operator`, `country`, `network`, `geohash`, `software`,
+  `requirements`, `topics` and `added_at` fields.
+
+[0.3.0]: https://github.com/qntx/relays/compare/v0.2.0...HEAD
+
 ## [0.2.0] - 2026-06-06
 
 A ground-up refactor toward an ecosystem-native, production-ready relay catalog.
