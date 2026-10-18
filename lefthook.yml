@@ -5,8 +5,6 @@
 # release binary from https://github.com/evilmartians/lefthook/releases.
 
 pre-commit:
-  # Serial so `build` sees an up-to-date `relays.toml` and the Cargo cache
-  # stays warm across steps.
   parallel: false
   commands:
     fmt:
@@ -15,14 +13,9 @@ pre-commit:
     clippy:
       glob: "*.rs"
       run: cargo clippy --workspace --all-targets -- -D warnings
+    taplo:
+      glob: "*.toml"
+      run: npx --yes @taplo/cli@0.7.0 fmt --check
     validate:
       glob: "relays.toml"
       run: cargo run --quiet -- validate
-    # Regenerate api/*.json + README whenever the catalog changes so local
-    # commits mirror what CI would produce. `stage_fixed: true` auto-adds the
-    # regenerated files to the same commit.
-    build:
-      glob: "relays.toml"
-      run: cargo run --quiet -- build
-      stage_fixed: true
-      

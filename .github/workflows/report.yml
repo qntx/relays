@@ -1,0 +1,42 @@
+name: Relay report
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Render report
+        id: report
+        run: |
+          body="$(cargo run --quiet -- report https://relays.meowl.social/v1/report.json)"
+          if [ -n "$body" ]; then
+            {
+              echo 'body<<EOF'
+              printf '%s\n' "$body"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          fi
+      - name: Update or open the tracking issue
+        if: steps.report.outputs.body != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ steps.report.outputs.body }}
+        run: |
+          set -euo pipefail
+          number="$(gh issue list --state open --search 'in:title "Relay report"' --json number --jq '.[0].number')"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body "$BODY"
+          else
+            gh issue create --title "Relay report" --body "$BODY"
+          fi
