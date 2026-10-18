@@ -1,0 +1,25 @@
+name: Container
+
+# Release-only multi-arch container image pipeline via the shared
+# publish-container reusable workflow (build + push + sign + SBOM + attest).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    uses: qntx/workflows/.github/workflows/publish-container.yml@v2
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    with:
+      # arm64 is built under QEMU on an amd64 runner; a release Rust build
+      # (LTO, one codegen unit) exceeds the 45-minute default.
+      timeout-minutes: 120

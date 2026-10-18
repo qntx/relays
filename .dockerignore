@@ -1,0 +1,19 @@
+# Build outputs and editor / OS noise.
+target/
+**/target/
+.git/
+.github/
+.idea/
+.vscode/
+.windsurf/
+.DS_Store
+
+docs/
+**/tests/
+**/*.bench.rs
+
+# Local-only files
+*.log
+*.swp
+.env
+.env.*
